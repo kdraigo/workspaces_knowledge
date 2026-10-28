@@ -124,8 +124,8 @@ func TestSlug(t *testing.T) {
 		"Funding drag on longs (BTC)": "funding-drag-on-longs-btc",
 		"  RSI 14 / 30↑  ":            "rsi-14-30",
 		"Ставка финансирования":       "ставка-финансирования",
-		"???":                         "untitled",
-		strings.Repeat("ab ", 40):     strings.TrimRight(strings.Repeat("ab-", 27), "-"),
+		"???":                     "untitled",
+		strings.Repeat("ab ", 40): strings.TrimRight(strings.Repeat("ab-", 27), "-"),
 	} {
 		if got := Slug(in); got != want {
 			t.Errorf("Slug(%q) = %q, want %q", in, got, want)
@@ -146,5 +146,29 @@ func TestValidKind(t *testing.T) {
 	}
 	if ValidKind("memo") {
 		t.Error("memo is not a kind")
+	}
+}
+
+func TestFileName(t *testing.T) {
+	for in, want := range map[string]string{
+		"Funding drag on longs (BTC)": "Funding drag on longs (BTC)",
+		"RSI 14 / 30: exits?":         "RSI 14 30 exits",
+		"  [[x]] #tag ^block  ":       "x tag block",
+		"Ставка финансирования":       "Ставка финансирования",
+		".hidden. ":        "hidden",
+		"line\nbreak\ttab": "line break tab",
+		"???":              "Untitled",
+		"con":              "con_",
+		"LPT3.txt":         "LPT3.txt_",
+		"COM0":             "COM0",
+	} {
+		if got := FileName(in); got != want {
+			t.Errorf("FileName(%q) = %q, want %q", in, got, want)
+		}
+	}
+	// A long title in a two-byte script is cut on a character.
+	long := FileName(strings.Repeat("я", 100))
+	if len(long) > maxFileName || !strings.HasPrefix(strings.Repeat("я", 100), long) {
+		t.Errorf("cut inside a character: %q (%d bytes)", long, len(long))
 	}
 }

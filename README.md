@@ -13,7 +13,8 @@ import knowledge "github.com/kdraigo/workspaces_knowledge"
 
 doc, err := knowledge.Parse(file)        // frontmatter + body
 links := knowledge.Links(doc.Body)       // [[Target#Heading|alias]], code skipped
-name := knowledge.Slug("Funding drag")   // "funding-drag": file name and link key
+key := knowledge.Slug("Funding drag")    // "funding-drag": the platform's id and link key
+file := knowledge.FileName("RSI 14 / 30") // "RSI 14 30": the file Obsidian links [[…]] to
 out, err := doc.Render()                 // keys sorted, body untouched
 ```
 

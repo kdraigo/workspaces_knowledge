@@ -96,10 +96,11 @@ func parseLink(inner string) (Link, bool) {
 	return l, true
 }
 
-// maxSlug bounds a slug, which is also a file name.
+// maxSlug bounds a slug.
 const maxSlug = 80
 
-// Slug is a title as a file name and a link key: lower case, letters and
+// Slug is a title as the platform's id and a link's key (a file's name is
+// FileName): lower case, letters and
 // digits of any script kept, everything else one dash, "untitled" when
 // nothing is left. "Funding drag on longs (BTC)" is
 // "funding-drag-on-longs-btc".
